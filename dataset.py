@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import Dataset
 
 
-class NewsDataset(Dataset):
+class GenericDataset(Dataset):
     def __init__(self, data_list, max_length, tokenizer):
         """
         :param data_list: list of 2 lists in order [title, text,  label]
@@ -16,10 +16,11 @@ class NewsDataset(Dataset):
 
     def __getitem__(self, index):
 
-        tokenized_title = self.tokenizer.tokenize(self.data_list[0][index])
-        tokenized_text = self.tokenizer.tokenize(self.data_list[1][index])
+        #tokenized_title = self.tokenizer.tokenize(self.data_list[0][index])
+        tokenized_text = self.tokenizer.tokenize(self.data_list[0][index])
 
-        tokenized_text = ['[CLS]'] + tokenized_title + ['[SEP]'] + tokenized_text + ['[SEP]']
+        #tokenized_text = ['[CLS]'] + tokenized_title + ['[SEP]'] + tokenized_text + ['[SEP]']
+        tokenized_text = ['[CLS]']  + tokenized_text + ['[SEP]']
 
         difference = len(tokenized_text) - self.max_length
 
