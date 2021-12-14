@@ -132,8 +132,8 @@ class SaliencyInterpreter:
         attention_mask = batch.get("attention_mask").to(self.device)
         outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
 
-        label = torch.argmax(outputs, dim=1)
-        batch_losses = self.criterion(outputs, label)
+        label = torch.argmax(outputs.logits, dim=1)
+        batch_losses = self.criterion(outputs.logits, label)
         loss = torch.mean(batch_losses)
 
         self.batch_output = [input_ids, outputs]
@@ -149,7 +149,7 @@ class SaliencyInterpreter:
 
         input_ids, outputs, grads = self.batch_output
 
-        probs = softmax(outputs, dim=-1)
+        probs = softmax(outputs.logits, dim=-1)
         probs, labels = torch.max(probs, dim=-1)
 
         tokens = [
